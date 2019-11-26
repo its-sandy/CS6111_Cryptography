@@ -1,0 +1,118 @@
+\documentclass[10pt]{exam}
+\printanswers
+\usepackage{amsmath,amssymb,complexity}
+\usepackage[all]{xy}
+\usepackage[utf8]{inputenc}
+\usepackage[hmargin=2cm,vmargin=2cm]{geometry}
+\usepackage{textcomp}
+\usepackage{tfrupee}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\newtheorem{proposition}{Proposition}
+\usepackage{complexity}
+\renewcommand{\baselinestretch}{1.4}
+
+\title{CS6111: Foundations of Cryptography}
+\author{Assignment 2}
+\date{}
+
+\def\bitcoinA{%
+  \leavevmode
+  \vtop{\offinterlineskip %\bfseries
+    \setbox0=\hbox{B}%
+    \setbox2=\hbox to\wd0{\hfil\hskip-.03em
+    \vrule height .3ex width .15ex\hskip .08em
+    \vrule height .3ex width .15ex\hfil}
+    \vbox{\copy2\box0}\box2}}
+
+\def\bitcoinC{\leavevmode\rlap{\hskip.5pt-}B} 
+
+
+\begin{document}
+
+\maketitle
+
+\subsection*{Instructions} 
+\begin{itemize}
+    \item Deadline is September 9.
+    \item We encourage submissions by Latex. Paper is also accepted. 
+\end{itemize}
+
+
+\subsection*{References} 
+\begin{itemize}\itemsep0em
+    \item Introduction to Cryptography - Delfs and Knebl
+    \item A Graduate Course in Applied Cryptography - Boneh and Shoup (\href{https://crypto.stanford.edu/~dabo/cryptobook}{link})
+    \item Introduction to Modern Cryptography - Katz and Lindell 
+    \item Handout 3
+\end{itemize}
+\section{Number Theory}
+\begin{questions}
+\question[2] \begin{proposition} Let $\mathbb{G}$ be a finite group, and $\mathbb{H}\subseteq\mathbb{G}$. Assume that $\mathbb{H}$ contains the identity element of $\mathbb{G}$, and that for all $a,b\in \mathbb{H}$ it holds that $ab\in\mathbb{H}$. Then $\mathbb{H}$ is a subgroup of $\mathbb{G}$.
+\end{proposition}
+Show that the above proposition does not necessarily hold when $\mathbb{G}$ is infinite. {\textbf{Hint:} Consider the set $\{1\}\cup\{2,4,6,8\cdots\}\subset \mathbb{R}$.}
+\question[2] Let $\mathbb{G}$ be a  finite group and $g \in \mathbb{G}$. Show that $\langle g\rangle = \{ g^i \mid i \geq 0\}$ is a subgroup of $\mathbb{G}$. Is the set $\{g^0,g^1,\cdots \}$ necessarily a subgroup of $G$ when $G$ is infinite?
+\question[2] If $N=pq$ and $ed= 1 \mod\phi(N)$ then for any $x\in\mathbb{Z}_N^*$ we have $(x^e)^d=x\mod N$. Show that this holds for all $x\in \mathbb{Z}_N$. {\textbf{Hint:} Use the Chinese remainder theorem.}
+
+
+
+
+
+
+
+\question[2] Let $N=pq$ be a product of two distinct primes. Show that if $N$ and $\phi(N)$ are known, it is possible to compute $p$ and $q$ in polynomial time.
+
+\question[2] Let $N=pq$ be a product of two distince primes. Show that if $N$ and an integer $d$ such that $3d \equiv 1 \mod \phi(n)$ are known, then it is possible to compute $p$ and $q$ in polynomial time. {\textbf{Hint:} First obtain a small list of possible values of $\phi(n)$.)}
+
+
+
+\end{questions}
+
+
+\section{One Way Functions and Negligible Functions}
+\begin{questions}
+\question[2] If $\mu(.)$ and $\nu(.)$ are negligible functions then show that $\mu(.)\cdot \nu(.)$ is a negligible function.
+\question[2] If $\mu()$ is a negligible function and $f()$ is a function polynomial in its input then
+show that $\mu(f())$ are negligible functions.
+\question[2] Prove that the existence of one-way functions implies $\P \neq \NP$.
+\question[2] Prove that there is no one-way function $f : \{0, 1\}^n \rightarrow \{0, 1\}^{\lfloor\log_2 n\rfloor}$.
+\question[2] Let $f : \{0, 1\}^n \rightarrow \{0, 1\}^n$ be any one-way function then is $f'
+(x) \stackrel{def}{=} f(x)\oplus x$ necessarily one-way?
+\question[2] Prove or disprove: If $f : \{0, 1\}^n \rightarrow \{0, 1\}^n$ is a one-way function, then $g : \{0, 1\}^n \rightarrow \{0, 1\}^{n-\log n}$ is a one-way function, where $g(x)$ outputs the $n-\log n$ higher order bits of $f(x)$.
+\question[2] If $f$ is a one-way function then is $f^2(x) = f(f(x))$ always a one-way function?  
+\end{questions}
+\section{Fun With One Way Functions}
+Suppose that $f(x)$ is a one-way function. Let $|x|$ denote the length of the binary string $x$. We let $\circ$ denote the concatenation operator. Similarly, $(\circ)$ is the parse operator which we can use to represent a string $x$ as $x = x_1(\circ)x_2$ where $|x_1| = |x_2|$. (Assume for simplicity that all strings to which this operator is applied are of even length; for example, this can be accomplished by appending a $0$ to the end of an odd-length string prior to applying this operator.) Function $f$ here is \textit{length-preserving}, which means that $|f(x)| = |x|$, and also that we need not give the adversary $1^k$ as input.
+\begin{questions}
+
+
+\question[3] Prove that the following is not a one-way function:\\
+$f_a(x)=f(x_1)\oplus x_2$, where $x=x_1(\circ)x_2$.\\
+% We define $\oplus$ as follows.\\
+% For bits $b_1$ and $b_2$, $b_1\oplus b_2=b_1\ \text(XOR)\ b_2$.\\
+% For binary strings $x$ and $y$, where $|x|=|y|=n$,\\
+% $x\oplus y=(x^1\oplus y^1)\circ (x^2\oplus y^2)\circ \cdots \circ (x^n\oplus y^n),$\\
+% where $x^i$ and $y^i$ are the $i$th bits of $x$ and $y$, respectively.
+
+\question[3] Find the fault in the following proof that $f_a$ is one-way.
+
+$f_a(x)$ is a one-way function. Assume for the sake of contradiction that we have a PPT inverter $\mathcal{A}$ for $f_a(x)$ that, when given ${w}$, outputs some $x'$ such that $f_a(x')={w}$ with nonnegligible probability. We want to use this $\mathcal{A}$ to construct an inverter for the one-way function $f(x)$. Let $\mathcal{B}$ be a PPT that on input $y$ picks a random string $z\leftarrow \{0,1\}^{|y|}$, runs $\mathcal{A}$ on ${w}=y\oplus z$ to get back some value $x'=x_1'(\circ)x_2'$, and then returns $x_1'$.\\
+\begin{center}
+\includegraphics[scale=0.7]{image.png}\vspace{0.5cm}
+\end{center}
+What happens when $\mathcal{A}$ succeeds? This means that the $x'$ that $\mathcal{A}$ returns is such that $f(x_1')\oplus x_2'=f_1(x')={w}=y\oplus z$. Because $f$ is length preserving and $y$ and $z$ have the same length, we know that $f(x_1')=y$ and $x_2'=z$. Therefore, the $x_1'$ that $\mathcal{B}$ returns is a preimage of $y$. 
+
+This means that when $\mathcal{A}$ succeeds, so does $\mathcal{B}$, which further implies that the probability of $\mathcal{B}$
+succeeding is at least the probability of $\mathcal{A}$ succeeding inside $\mathcal{B}$. Since the input to $\mathcal{A}$ inside $\mathcal{B}$ is
+distributed identically to the input to $\mathcal{A}$ in the wild, the probability of $\mathcal{A}$ succeeding inside $\mathcal{B}$ is
+equal to the probability of $\mathcal{A}$ succeeding in the wild, which is non-negligible by assumption. So
+the probability of $\mathcal{B}$ succeeding is also non-negligible. But this means that $\mathcal{B}$ is an inverter for
+the one-way function $f(x)$ that works with non-negligible probability, which is a contradiction. So $f_a(x)$ must be a one-way function.
+\question[3] Prove that one-way functions cannot have polynomial-size ranges. More precisely, prove that if $f$ is a one-way function, then for every polynomial $p()$ and all sufficiently large $n'$s, $|\{f(x):x\in \{0,1\}^n\}|>p(n)$
+\question[3] Let $f$ be a one-way function. Prove that $g(x)=f(x_1)$, where $x=x_1(\circ)x_2$, is a one-way function.
+
+\end{questions}
+\end{document}

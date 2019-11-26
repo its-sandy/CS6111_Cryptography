@@ -1,0 +1,186 @@
+\documentclass[10pt]{exam}
+\printanswers
+\usepackage{amsmath,amssymb,complexity}
+\usepackage[all]{xy}
+\usepackage[utf8]{inputenc}
+\usepackage[hmargin=2cm,vmargin=2cm]{geometry}
+\usepackage{textcomp}
+\usepackage{tfrupee}
+\usepackage{url}
+\usepackage{hyperref}
+\renewcommand{\baselinestretch}{1.4}
+
+\title{CS6111: Foundations of Cryptography}
+\author{Assignment 1}
+\date{}
+
+\def\bitcoinA{%
+  \leavevmode
+  \vtop{\offinterlineskip %\bfseries
+    \setbox0=\hbox{B}%
+    \setbox2=\hbox to\wd0{\hfil\hskip-.03em
+    \vrule height .3ex width .15ex\hskip .08em
+    \vrule height .3ex width .15ex\hfil}
+    \vbox{\copy2\box0}\box2}}
+
+\def\bitcoinC{\leavevmode\rlap{\hskip.5pt-}B} 
+
+
+\begin{document}
+
+\maketitle
+
+\subsection*{Instructions} 
+\begin{itemize}
+    \item Deadline is Monday, August 19.
+    \item We encourage submissions by Latex. Paper is also accepted. 
+    \item Proofs, where required, must be formal. All answers are concise.
+    \item The Addendum provides information that explains the method behind some questions.
+\end{itemize}
+
+
+\subsection*{References} 
+\begin{itemize}\itemsep0em
+    \item Introduction to Cryptography - Delfs and Knebl
+    \item A Graduate Course in Applied Cryptography - Boneh and Shoup (\href{https://crypto.stanford.edu/~dabo/cryptobook}{link})
+    \item Introduction to Modern Cryptography - Katz and Lindell 
+    
+    \item Cryptography: Theory and Practice - Douglas Stinson (3rd edition)
+    \item Handout 1 - Entropy Axioms
+            \begin{itemize}
+                \item It gives an overview of entropy with many definitions. Page 7 starts talking about the axioms.
+            \end{itemize}
+\end{itemize}
+
+\section{Perfect Secrecy}
+
+\begin{questions}
+
+
+\question[8] We defined Shannon's entropy in class and mentioned its uniqueness. ``Handout1 - Entropy Axioms'' shows how the uniqueness of the definition can be derived from axioms. 
+
+\begin{parts}
+    \part[2] Explain, with examples of distributions, how Shannon's entropy captures the amount of information in bits we obtain after an event. 
+    \part[2] Define conditional entropy and relative entropy. Justify why their definitions make sense.
+    \part[4] Justify both sets of {\bf axioms} for Shannon's entropy (pg 8,9). Explain how you believe they each capture the essential properties of entropy we require.
+\end{parts}
+
+\textit{Hint: These ``justify'' questions do not require rigorous proof and are slightly open-ended in that sense. We expect each axiom to be explained and how it relates to the information-theoretic notions detailed in parts (a), (b). Do not simply rewrite the axioms.}
+
+\begin{solution}
+
+\end{solution}
+
+\question[5] Suppose a cryptosystem $(E,D)$ achieves perfect secrecy for a particular distribution $P= (p_1,\ldots,p_n)$ on a plaintext set $M = \{m_1,\ldots,m_n\}$. Prove that the system is also perfectly secret for all other probability distributions $P'$ on $M$. 
+
+\textit{Hint: Understand the definitions carefully.}
+
+\question[5] What is the affine cipher? Show that the number of keys $(a,b)$ when $m=26$ is $312$.
+
+    \begin{parts}
+        \part[2] Prove prefect secrecy when each key is chosen with equal probability.
+        \part[2] Suppose instead that we choose (only valid values of) $a$ according to a given probability distribution $P$ and $b$ is chosen randomly. Prove that perfect secrecy still holds. 
+    \end{parts}
+    
+\textit{Hint: Note that the message space is just single characters from the alphabet. 
+ The rest should follow from the definitions of perfect secrecy.}
+
+\question[5] Let $(Enc,Dec)$ be a perfectly-secure scheme. Define a new scheme $Enc'((k_1,k_2),m) = (Enc(k_1,k_2),Enc(k_2,m))$. Prove that $Enc'$ is perfectly-secure.
+
+\subsection*{Variations to Perfect Security}
+
+    \noindent\fbox{%
+                \parbox{\textwidth}{%
+                    Let $(Enc,Dec)$ be an encryption scheme on $(M,K,C)$.
+                    
+                    \bigskip 
+                    {\bf Indistinguishability Attack Game} - Experiment $b$: 
+                    \begin{enumerate}
+                        \item Attacker Eve chooses $m_0,m_1 \in M$.
+                        \item Challenger chooses a random $k \in K$ and gives Eve $c=Enc_k(m_b)$.
+                        \item Eve outputs her guess $b'$.
+                    \end{enumerate}
+                    
+                    Eve wins if $b'=b$.
+                    
+                    \medskip
+                    {\bf Advantage:} Let $W_b$ be the probability that Eve outputs $1$ in Experiment $b$. The semantic-security advantage of the attacker is defined as ${\sf SSAdv}(Eve,Enc) = |W_0-W_1|.$
+                    \begin{itemize}
+                        \item If the scheme is perfectly secure, then the probability that Eve wins is $1/2$. Equivalently, Eve's advantage is $0$.
+                    \end{itemize}
+                }%
+            }
+
+\question[5] Consider a variant of the one-time pad where $M=C=\{0,1\}^L$ but the keyspace $K\subset \{0,1\}^L$ is restricted to strings with an even number of $1$s. Prove that this version is not perfectly secure and an adversary can win the indistinguishability game with probability 1.
+
+\textit{Hint: Design a strategy where Eve chooses $m_0,m_1$ such that, knowing the challenger uses the modified keyspace, Eve will always be able to distinguish correctly.}
+
+\question[5] Define an encryption scheme to be $\epsilon$-perfectly secure if the probability that Eve wins the game is $1/2+\epsilon$. Show that $\epsilon$-perfect secrecy can be achieved with $|K|<|M|$ when $\epsilon>0$. Prove a lower bound on the size of $K$ in terms of $M,\epsilon$.
+
+\textit{Hint: This means that Eve can choose $m_0,m_1$ such that there is an $\epsilon$ additional probability that, seeing $c$ (and knowing nothing about $k$), she can figure out which $m_i$ was used to encrypt $c$. What does this say about the mapping? (See Addendum)}
+
+\question[5] Assume that we only require an encryption scheme {\sf Enc, Dec} to satisfy the following: For all $m \in M$ we have $\mathsf{Pr}[Dec_k(Enc_k(m))=m] \geq 2^{-t}$ (for some parameter $t$). The probability is taken over the choice of key and randomness used in the encryption algorithm. Show that perfect secrecy can now be achieved with $|K| < |M|$ when $t\geq 1$. Prove a lower bound on the size of $K$ in terms of $M$ and $t$. 
+
+\textit{Hint: After seeing $c$, even with the key $k$ used in the encryption $c=E_k(m^*)$, there is only a $1/2^t$ probability that the now-probabilistic decryption algorithm gives the intended $m^*$. Think about this as a table mapping (described in the Addendum).}
+
+\bigskip 
+
+    \noindent\fbox{%
+                \parbox{\textwidth}{%
+                    Let $(Enc,Dec)$ be an encryption scheme on $(M,K,C)$.
+                    
+                    \bigskip 
+                    {\bf Parity Prediction Game}: 
+                    \begin{enumerate}
+                        \item Challenger chooses a random $m\in M$ and $k \in K$ and gives Eve $c=Enc_k(m)$.
+                        \item Eve guesses $parity(m)$ and wins if she is correct.
+                    \end{enumerate}
+                    
+                    \medskip
+                    {\bf Advantage:} Let $W$ be the probability that Eve outputs the correct parity. The advantage of the attacker is defined as ${\sf ParityAdv}(Eve,Enc) = |W-1/2|.$
+                }%
+            }
+
+\bigskip 
+
+\question[5] Consider the above Parity Prediction Game. Prove, by reduction, that a semantically secure scheme is also secure against parity prediction: that is, show that if there exists an attacker with advantage $\epsilon$ in predicting parity, then we can get advantage $2\epsilon$ in the Indistinguishability game.
+
+\textit{Hint: This is known as a blackbox reduction, which you will see all over cryptography. We have one attacker $E$ who can (only) win the parity prediction game. We want to create another attacker $E'$ who can win the Indistinguishability game. $E'$ will use $E$ as a {\bf black box}: that is, $E'$ now acts as a Parity-Challenger to $E$ and can choose any $m$ it desires in step 1. It receives the guess of $E$ from step 2.
+Now, like in Question 5, design a strategy for $E'$ to adversarially choose $m_0,m_1$ to win the indistinguishability game against a challenger.}
+
+\end{questions}
+
+\section{Randomized Algorithms Warmup}
+
+\begin{questions}
+
+\question[4] Start with rolling an $n$ sided die. If it lands on $r>1$, roll an $r$-sided die and repeat. If it lands on $r=1$, then halt. What is the expected number of rolls before halting? 
+
+\textit{Hint: Obtain a recurrence relation and solve it. Solving it involves algebraic manipulation.}
+
+\question[3] Prove the following ``success amplification'' theorem for Monte Carlo randomized algorithms (one whose output might be incorrect but will always halt in polynomial time).
+
+{\it Let $P$ and $Q$ be polynomials and $A$ be a probabilistic algorithm computing a function $f$ such that: $\Pr[A(x)=f(x)] > \frac{1}{2}+ \frac{1}{P(|x|)}$. Then, by repeating the computation, prove that you can amplify the success probability to $\Pr[A(x)=f(x)] > 1 - \frac{1}{Q(|x|)}$. How many repetitions does it take? }
+
+\textit{Hint: Bernouilli trials.}
+
+\end{questions} 
+
+\section{Addendum}
+
+\subsection*{What is an encryption scheme?} 
+
+Questions 6 and 7 ask you to provide encryption schemes that satisfy modified security descriptions. An encryption scheme is simply a  table listing all possible messages $m \in M$, all possible ciphertexts $c \in C$, and a valid key $k\in K$ connecting a given $m$ and $c$ such that $E_k(m)=c$. That is, $(m,k,c)$ is an entry in this table. This table (encryption scheme) is public. But the key $k$ used by two parties is private to them. Note that this table also abstracts the randomness used in the encryption (and decryption) algorithms. 
+\begin{itemize}
+    \item For example, the One-Time Pad is described as an algorithm using the $\oplus$ operator. But it can equivalently be represented as a table over $M=K=C=\{0,1\}^l$. It includes all entries of the form $(m,k,m\oplus k)$ for all $m,k$.
+\end{itemize}
+
+\bigskip 
+
+So in your answer you can simply describe a mapping between $M$ and $C$ using keys $K$. How many messages are connected to how many ciphertexts via how many keys? Ensure that every $m$ and $k$ has a corresponding $c$. Using this, prove the required security property. 
+\begin{itemize}
+    \item Hence, you need not necessarily use the One-Time Pad or detail a specific encryption algorithm.
+\end{itemize}
+
+
+\end{document}
